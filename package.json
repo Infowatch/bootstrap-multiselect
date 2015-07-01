@@ -1,0 +1,41 @@
+{
+  "name": "bootstrap-multiselect",
+  "title": "bootstrap-multiselect.js",
+  "description": "JQuery multiselect plugin based on Twitter Bootstrap.",
+  "version": "0.9.14",
+  "main": "dist/bootstrap-multiselect.js",
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Infowatch/bootstrap-multiselect.git"
+  },
+  "keywords": [
+    "js",
+    "css",
+    "less",
+    "bootstrap",
+    "jquery",
+    "multiselect"
+  ],
+  "author": {
+    "name": "David Stutz"
+  },
+  "license": "Apache License, Version 2.0",
+  "bugs": {
+    "url": "https://github.com/Infowatch/bootstrap-multiselect/issues"
+  },
+  "homepage": "https://github.com/Infowatch/bootstrap-multiselect",
+  "maintainers": [
+    {
+      "name": "marshallswain",
+      "email": "marshall@creativeideal.net"
+    }
+  ],
+  "readme": "ERROR: No README data found!"
+}
