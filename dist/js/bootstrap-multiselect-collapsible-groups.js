@@ -29,7 +29,7 @@
 			if (this.options.enableCollapsibleOptGroups && this.options.multiple) {
 				var n = e(t).attr("label");
 				var v = e(t).attr("value");
-				var r = e('<li class="multiselect-item multiselect-group"><a href="javascript:void(0);"><input type="checkbox" value="' + v + '"/><b> ' + n + '<b class="caret"></b></b></a></li>');
+				var r = e('<li class="multiselect-item multiselect-group"><a tabindex="0"><label class="' + this.options.groupClass + '"><input type="checkbox" value="' + v + '"/> ' + n + '<i class="caret"></i></label></a></li>');
 
 				if (this.options.enableClickableOptGroups) {
 					r.addClass("multiselect-group-clickable")
@@ -46,7 +46,7 @@
 			}
 		};
 	}());
-	
+
 	jQuery.fn.multiselect.Constructor.prototype.buildDropdownOptions = (function() {
 		var cached_function = jQuery.fn.multiselect.Constructor.prototype.buildDropdownOptions;
 
@@ -54,7 +54,7 @@
 			cached_function.apply(this, arguments);
 
 			if (this.options.enableCollapsibleOptGroups && this.options.multiple) {
-				
+
 				e("li.multiselect-group input", this.$ul).off();
 				e("li.multiselect-group", this.$ul).siblings().not("li.multiselect-group, li.multiselect-all", this.$ul).each( function () {
 					$(this).toggleClass('hidden', true);
@@ -62,8 +62,9 @@
 				e("li.multiselect-group", this.$ul).on("click", e.proxy(function(t) {
 					t.stopPropagation();
 				}, this));
-				e("li.multiselect-group > a > b", this.$ul).on("click", e.proxy(function(t) {
+				e("li.multiselect-group > a > label > i", this.$ul).on("click", e.proxy(function(t) {
 					t.stopPropagation();
+					t.preventDefault();
 					var n = e(t.target).closest('li');
 					var r = n.nextUntil("li.multiselect-group");
 					var i = true;
@@ -72,17 +73,30 @@
 					});
 					r.toggleClass('hidden', !i);
 				}, this));
-				e("li.multiselect-group > a > input", this.$ul).on("change", e.proxy(function(t) {
-					t.stopPropagation();
-					var n = e(t.target).closest('li');
-					var r = n.nextUntil("li.multiselect-group");
-					var i = true;
-					var s = r.find("input");
-					s.each(function() {
-						i = i && e(this).prop("checked")
-					});
-					s.prop("checked", !i).trigger("change")
-				}, this));
+				e("li > a input", this.$ul).on("change", e.proxy(function(t) {
+                    var n = e(t.target).closest('li');
+                    var i = true;
+
+                    if (n.hasClass("multiselect-group")) {
+                        t.stopPropagation();
+
+                        var r = n.nextUntil("li.multiselect-group");
+                        var s = r.find("input");
+                        s.each(function() {
+                            i = i && e(this).prop("checked")
+                        });
+                        s.prop("checked", !i).trigger("change")
+                    } else {
+                        var h = n.prevAll(".multiselect-group").first();
+                        var r = h.nextUntil("li.multiselect-group");
+                        var s = r.find("input");
+                        s.each(function() {
+                            i = i && e(this).prop("checked");
+                        });
+                        h.find('input').prop("checked", i);
+                    }
+
+                }, this));
 				e("li.multiselect-all", this.$ul).css('background', '#f3f3f3').css('border-bottom', '1px solid #eaeaea');
 				e("li.multiselect-group > a, li.multiselect-all > a > label.checkbox", this.$ul).css('padding', '3px 20px 3px 35px');
 				e("li.multiselect-group > a > input", this.$ul).css('margin', '4px 0px 5px -20px');
