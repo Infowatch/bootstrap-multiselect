@@ -122,6 +122,11 @@
         };
     }
 
+    function isFunction(functionToCheck) {
+        var getType = {};
+        return functionToCheck && getType.toString.call(functionToCheck) === '[object Function]';
+    }
+
     function forEach(array, callback) {
         for (var index = 0; index < array.length; ++index) {
             callback(array[index], index);
@@ -159,6 +164,8 @@
         this.options.onDropdownHide = $.proxy(this.options.onDropdownHide, this);
         this.options.onDropdownShown = $.proxy(this.options.onDropdownShown, this);
         this.options.onDropdownHidden = $.proxy(this.options.onDropdownHidden, this);
+
+        this.compileTemplates();
 
         // Build select all if enabled.
         this.buildContainer();
@@ -344,6 +351,18 @@
         },
 
         constructor: Multiselect,
+
+        /**
+         * Compile element templates if they are functions.
+         */
+        compileTemplates: function() {
+            var self = this;
+            $.each(this.options.templates, function(key, value){
+                if (isFunction(value)) {
+                    self.options.templates[key] = value.call(self);
+                }
+            });
+        },
 
         /**
          * Builds the container of the multiselect.
