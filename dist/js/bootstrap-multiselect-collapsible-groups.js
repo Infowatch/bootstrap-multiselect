@@ -27,6 +27,7 @@
 			var args	= Array.prototype.slice.call( arguments );
 			var t		= args[0];
 			if (this.options.enableCollapsibleOptGroups && this.options.multiple) {
+				var i = true;
 				var n = e(t).attr("label");
 				var v = e(t).attr("value");
 				var r = e('<li class="multiselect-item multiselect-group"><a tabindex="0"><label class="' + this.options.groupClass + '"><input type="checkbox" value="' + v + '"/> ' + n + '<i class="caret"></i></label></a></li>');
@@ -38,9 +39,12 @@
 				if (e(t).is(":disabled")) {
 					r.addClass("disabled")
 				}
+				var $ = e;
 				e("option", t).each(e.proxy(function(e, t) {
+					i = i && $(t).is(":selected");
 					this.createOptionValue(t)
 				}, this))
+				$('input', r).prop("checked", i);
 			} else {
 				cached_function.apply(this, arguments);
 			}
